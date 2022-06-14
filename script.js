@@ -1,43 +1,48 @@
+const buttons = Array.from(document.querySelectorAll('button'));
+const resultsDiv = document.getElementById('results');
 const choices = ['Rock', 'Paper', 'Scissors'];
 
 function computerPlay() {
   return choices[Math.floor(Math.random() * choices.length)];
 }
 
+function handleClick(e) {
+  const playerSelection = e.target.dataset.value;
+  const result = playRound(playerSelection, computerPlay());
+  console.log(result);
+}
+
+function showResults(result) {
+  resultsDiv.textContent = result;
+}
+
+buttons.forEach((button) => button.addEventListener('click', handleClick));
+
 function playRound(playerSelection, computerSelection) {
   const player = playerSelection.toLowerCase();
   const computer = computerSelection.toLowerCase();
-  console.log(`${player} v ${computer}`);
+  let result = '';
   if (player === computer) {
-    return `Draw: ${player} and ${computer}`;
+    result = `Draw: ${player} and ${computer}`;
   } else if (player === 'rock' && computer === 'scissors') {
-    return `You Win! Rock beats scissors`;
+    result = `You Win! Rock beats scissors`;
   } else if (player === 'paper' && computer === 'rock') {
-    return `You Win! Paper beats rocks`;
+    result = `You Win! Paper beats rocks`;
   } else if (player === 'scissors' && computer === 'paper') {
-    return `You Win! Scissors beats paper`;
+    result = `You Win! Scissors beats paper`;
   } else if (computer === 'rock' && player === 'scissors') {
-    return `You Lose! Rock beats scissors`;
+    result = `You Lose! Rock beats scissors`;
   } else if (computer === 'paper' && player === 'rock') {
-    return `You Lose! Paper beats rocks`;
+    result = `You Lose! Paper beats rocks`;
   } else if (computer === 'scissors' && player === 'paper') {
-    return `You Lose! Scissors beats paper`;
+    result = `You Lose! Scissors beats paper`;
   }
+  showResults(result);
 }
 
 function game() {
-  let playerScore = 0;
-  let computerScore = 0;
-  for (let i = 0; i < 5; i++) {
-    const player = prompt('Your selection? [Rock, Paper, Scissors]');
-    const result = playRound(player, computerPlay());
-    console.log(result);
-    if (result.includes('Win')) {
-      playerScore++;
-    } else if (result.includes('Lose')) {
-      computerScore++;
-    }
-  }
+  const result = playRound(player, computerPlay());
+  console.log(result);
   if (playerScore > computerScore) {
     console.log(`You won! ${playerScore} - ${computerScore}`);
   } else if (computerScore > playerScore) {
@@ -46,5 +51,3 @@ function game() {
     console.log('Draw');
   }
 }
-
-game();
